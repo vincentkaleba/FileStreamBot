@@ -21,9 +21,9 @@ broadcast_ids = {}
 
 @FileStream.on_message(filters.command("status") & filters.private & filters.user(Telegram.OWNER_ID))
 async def sts(c: Client, m: Message):
-    await m.reply_text(text=f"""**Total Users in DB:** `{await db.total_users_count()}`
-**Banned Users in DB:** `{await db.total_banned_users_count()}`
-**Total Links Generated: ** `{await db.total_files()}`"""
+    await m.reply_text(text=f"""**Uᴛɪʟɪsᴀᴛᴇᴜʀs ᴛᴏᴛᴀᴜx ᴅᴀɴs ʟᴀ ʙᴀsᴇ ᴅᴇ ᴅᴏɴɴᴇ́ᴇs :** `{await db.total_users_count()}`
+**Uᴛɪʟɪsᴀᴛᴇᴜʀs ʙᴀɴɴɪs ᴅᴀɴs ʟᴀ ʙᴀsᴇ ᴅᴇ ᴅᴏɴɴᴇ́ᴇs :** `{await db.total_banned_users_count()}`
+**Lɪᴇɴs ᴛᴏᴛᴀᴜx ɢᴇ́ɴᴇ́ʀᴇ́s :** `{await db.total_files()}`"""
                        , parse_mode=ParseMode.MARKDOWN, quote=True)
 
 
@@ -34,18 +34,18 @@ async def sts(b, m: Message):
         try:
             await db.ban_user(int(id))
             await db.delete_user(int(id))
-            await m.reply_text(text=f"`{id}`** is Banned** ", parse_mode=ParseMode.MARKDOWN, quote=True)
+            await m.reply_text(text=f"`{id}`** ᴀ ᴇ́ᴛᴇ́ ʙᴀɴɴɪ** ", parse_mode=ParseMode.MARKDOWN, quote=True)
             if not str(id).startswith('-100'):
                 await b.send_message(
                     chat_id=id,
-                    text="**Your Banned to Use The Bot**",
+                    text="**Vᴏᴜs ᴇ̂ᴛᴇs ʙᴀɴɴɪ ᴅ'ᴜᴛɪʟɪsᴇʀ ᴄᴇ ʙᴏᴛ**",
                     parse_mode=ParseMode.MARKDOWN,
                     disable_web_page_preview=True
                 )
         except Exception as e:
-            await m.reply_text(text=f"**something went wrong: {e}** ", parse_mode=ParseMode.MARKDOWN, quote=True)
+            await m.reply_text(text=f"**Qᴜᴇʟǫᴜᴇ ᴄʜᴏsᴇ s'ᴇsᴛ ᴍᴀʟ ᴘᴀssᴇ́ᴇ : {e}** ", parse_mode=ParseMode.MARKDOWN, quote=True)
     else:
-        await m.reply_text(text=f"`{id}`** is Already Banned** ", parse_mode=ParseMode.MARKDOWN, quote=True)
+        await m.reply_text(text=f"`{id}`** ᴇsᴛ ᴅᴇ́ᴊᴀ̀ ʙᴀɴɴɪ** ", parse_mode=ParseMode.MARKDOWN, quote=True)
 
 
 @FileStream.on_message(filters.command("unban") & filters.private & filters.user(Telegram.OWNER_ID))
@@ -54,18 +54,18 @@ async def sts(b, m: Message):
     if await db.is_user_banned(int(id)):
         try:
             await db.unban_user(int(id))
-            await m.reply_text(text=f"`{id}`** is Unbanned** ", parse_mode=ParseMode.MARKDOWN, quote=True)
+            await m.reply_text(text=f"`{id}`** ᴀ ᴇ́ᴛᴇ́ ᴅᴇ́ʙᴀɴɴɪ** ", parse_mode=ParseMode.MARKDOWN, quote=True)
             if not str(id).startswith('-100'):
                 await b.send_message(
                     chat_id=id,
-                    text="**Your Unbanned now Use can use The Bot**",
+                    text="**Vᴏᴜs ᴇ̂ᴛᴇs ᴅᴇ́ʙᴀɴɴɪ ᴇᴛ ᴘᴏᴜᴠᴇᴢ ᴍᴀɪɴᴛᴇɴᴀɴᴛ ᴜᴛɪʟɪsᴇʀ ʟᴇ ʙᴏᴛ**",
                     parse_mode=ParseMode.MARKDOWN,
                     disable_web_page_preview=True
                 )
         except Exception as e:
-            await m.reply_text(text=f"** something went wrong: {e}**", parse_mode=ParseMode.MARKDOWN, quote=True)
+            await m.reply_text(text=f"**Qᴜᴇʟǫᴜᴇ ᴄʜᴏsᴇ s'ᴇsᴛ ᴍᴀʟ ᴘᴀssᴇ́ᴇ : {e}**", parse_mode=ParseMode.MARKDOWN, quote=True)
     else:
-        await m.reply_text(text=f"`{id}`** is not Banned** ", parse_mode=ParseMode.MARKDOWN, quote=True)
+        await m.reply_text(text=f"`{id}`** ɴ'ᴇsᴛ ᴘᴀs ʙᴀɴɴɪ** ", parse_mode=ParseMode.MARKDOWN, quote=True)
 
 
 @FileStream.on_message(filters.command("broadcast") & filters.private & filters.user(Telegram.OWNER_ID) & filters.reply)
@@ -77,7 +77,7 @@ async def broadcast_(c, m):
         if not broadcast_ids.get(broadcast_id):
             break
     out = await m.reply_text(
-        text=f"Broadcast initiated! You will be notified with log file when all the users are notified."
+        text=f"Dɪғғᴜsɪᴏɴ ʟᴀɴᴄᴇ́ᴇ ! Vᴏᴜs sᴇʀᴇᴢ ɴᴏᴛɪғɪᴇ́ ᴀᴠᴇᴄ ʟᴇ ғɪᴄʜɪᴇʀ ʟᴏɢ ǫᴜᴀɴᴅ ᴛᴏᴜs ʟᴇs ᴜᴛɪʟɪsᴀᴛᴇᴜʀs ᴀᴜʀᴏɴᴛ ᴇ́ᴛᴇ́ ɴᴏᴛɪғɪᴇ́s."
     )
     start_time = time.time()
     total_users = await db.total_users_count()
@@ -116,7 +116,7 @@ async def broadcast_(c, m):
                     )
                 )
                 try:
-                    await out.edit_text(f"Broadcast Status\n\ncurrent: {done}\nfailed:{failed}\nsuccess: {success}")
+                    await out.edit_text(f"Sᴛᴀᴛᴜᴛ ᴅᴇ ʟᴀ ᴅɪғғᴜsɪᴏɴ\n\nᴀᴄᴛᴜᴇʟ : {done}\nᴇ́ᴄʜᴇᴄs : {failed}\nsᴜᴄᴄᴇ̀s : {success}")
                 except:
                     pass
     if broadcast_ids.get(broadcast_id):
@@ -126,13 +126,13 @@ async def broadcast_(c, m):
     await out.delete()
     if failed == 0:
         await m.reply_text(
-            text=f"broadcast completed in `{completed_in}`\n\nTotal users {total_users}.\nTotal done {done}, {success} success and {failed} failed.",
+            text=f"ᴅɪғғᴜsɪᴏɴ ᴛᴇʀᴍɪɴᴇ́ᴇ ᴇɴ `{completed_in}`\n\nTᴏᴛᴀʟ ᴜᴛɪʟɪsᴀᴛᴇᴜʀs {total_users}.\nTᴏᴛᴀʟ ᴇғғᴇᴄᴛᴜᴇ́ {done}, {success} sᴜᴄᴄᴇ̀s ᴇᴛ {failed} ᴇ́ᴄʜᴇᴄs.",
             quote=True
         )
     else:
         await m.reply_document(
             document='broadcast.txt',
-            caption=f"broadcast completed in `{completed_in}`\n\nTotal users {total_users}.\nTotal done {done}, {success} success and {failed} failed.",
+            caption=f"ᴅɪғғᴜsɪᴏɴ ᴛᴇʀᴍɪɴᴇ́ᴇ ᴇɴ `{completed_in}`\n\nTᴏᴛᴀʟ ᴜᴛɪʟɪsᴀᴛᴇᴜʀs {total_users}.\nTᴏᴛᴀʟ ᴇғғᴇᴄᴛᴜᴇ́ {done}, {success} sᴜᴄᴄᴇ̀s ᴇᴛ {failed} ᴇ́ᴄʜᴇᴄs.",
             quote=True
         )
     os.remove('broadcast.txt')
@@ -145,16 +145,13 @@ async def sts(c: Client, m: Message):
         file_info = await db.get_file(file_id)
     except FIleNotFound:
         await m.reply_text(
-            text=f"**ꜰɪʟᴇ ᴀʟʀᴇᴀᴅʏ ᴅᴇʟᴇᴛᴇᴅ**",
+            text=f"**ꜰɪᴄʜɪᴇʀ ᴅᴇ́ᴊᴀ̀ sᴜᴘᴘʀɪᴍᴇ́**",
             quote=True
         )
         return
     await db.delete_one_file(file_info['_id'])
     await db.count_links(file_info['user_id'], "-")
     await m.reply_text(
-        text=f"**Fɪʟᴇ Dᴇʟᴇᴛᴇᴅ Sᴜᴄᴄᴇssғᴜʟʟʏ !** ",
+        text=f"**Fɪᴄʜɪᴇʀ sᴜᴘᴘʀɪᴍᴇ́ ᴀᴠᴇᴄ sᴜᴄᴄᴇ̀s !** ",
         quote=True
     )
-
-
-
