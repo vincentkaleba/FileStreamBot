@@ -46,10 +46,10 @@ async def private_receive_handler(bot: Client, message: Message):
             quote=True
         )
     except FloodWait as e:
-        print(f"Sleeping for {str(e.value)}s")
+        print(f"En pause pendant {str(e.value)}s")
         await asyncio.sleep(e.value)
         await bot.send_message(chat_id=Telegram.ULOG_CHANNEL,
-                               text=f"Gᴏᴛ FʟᴏᴏᴅWᴀɪᴛ ᴏғ {str(e.value)}s ғʀᴏᴍ [{message.from_user.first_name}](tg://user?id={message.from_user.id})\n\n**ᴜsᴇʀ ɪᴅ :** `{str(message.from_user.id)}`",
+                               text=f"A ᴇᴜ FʟᴏᴏᴅWᴀɪᴛ ᴅᴇ {str(e.value)}s ᴅᴇ [{message.from_user.first_name}](tg://user?id={message.from_user.id})\n\n**ɪᴅ ᴜᴛɪʟɪsᴀᴛᴇᴜʀ :** `{str(message.from_user.id)}`",
                                disable_web_page_preview=True, parse_mode=ParseMode.MARKDOWN)
 
 
@@ -79,18 +79,17 @@ async def channel_receive_handler(bot: Client, message: Message):
             chat_id=message.chat.id,
             message_id=message.id,
             reply_markup=InlineKeyboardMarkup(
-                [[InlineKeyboardButton("Dᴏᴡɴʟᴏᴀᴅ ʟɪɴᴋ 📥",
+                [[InlineKeyboardButton("ʟɪᴇɴ ᴅᴇ ᴛᴇ́ʟᴇ́ᴄʜᴀʀɢᴇᴍᴇɴᴛ 📥",
                                        url=f"https://t.me/{FileStream.username}?start=stream_{str(inserted_id)}")]])
         )
 
     except FloodWait as w:
-        print(f"Sleeping for {str(w.x)}s")
+        print(f"En pause pendant {str(w.x)}s")
         await asyncio.sleep(w.x)
         await bot.send_message(chat_id=Telegram.ULOG_CHANNEL,
-                               text=f"ɢᴏᴛ ғʟᴏᴏᴅᴡᴀɪᴛ ᴏғ {str(w.x)}s ғʀᴏᴍ {message.chat.title}\n\n**ᴄʜᴀɴɴᴇʟ ɪᴅ :** `{str(message.chat.id)}`",
+                               text=f"ᴀ ᴇᴜ ғʟᴏᴏᴅᴡᴀɪᴛ ᴅᴇ {str(w.x)}s ᴅᴇ {message.chat.title}\n\n**ɪᴅ ᴅᴇ ʟᴀ ᴄʜᴀɪ̂ɴᴇ :** `{str(message.chat.id)}`",
                                disable_web_page_preview=True)
     except Exception as e:
-        await bot.send_message(chat_id=Telegram.ULOG_CHANNEL, text=f"**#EʀʀᴏʀTʀᴀᴄᴋᴇʙᴀᴄᴋ:** `{e}`",
+        await bot.send_message(chat_id=Telegram.ULOG_CHANNEL, text=f"**#SᴜɪᴠɪDᴇʀʀᴇᴜʀ:** `{e}`",
                                disable_web_page_preview=True)
-        print(f"Cᴀɴ'ᴛ Eᴅɪᴛ Bʀᴏᴀᴅᴄᴀsᴛ Mᴇssᴀɢᴇ!\nEʀʀᴏʀ:  **Gɪᴠᴇ ᴍᴇ ᴇᴅɪᴛ ᴘᴇʀᴍɪssɪᴏɴ ɪɴ ᴜᴘᴅᴀᴛᴇs ᴀɴᴅ ʙɪɴ Cʜᴀɴɴᴇʟ!{e}**")
-
+        print(f"Jᴇ ɴᴇ ᴘᴇᴜx ᴘᴀs ᴍᴏᴅɪғɪᴇʀ ʟᴇ ᴍᴇssᴀɢᴇ ᴅᴇ ᴅɪғғᴜsɪᴏɴ !\nEʀʀᴇᴜʀ :  **Dᴏɴɴᴇᴢ-ᴍᴏɪ ʟᴇ ᴅʀᴏɪᴛ ᴅᴇ ᴍᴏᴅɪғɪᴄᴀᴛɪᴏɴ ᴅᴀɴs ʟᴇs ᴄʜᴀɪ̂ɴᴇs ᴅᴇ ᴍɪsᴇs à ᴊᴏᴜʀ ᴇᴛ ʟᴀ ᴄʜᴀɪ̂ɴᴇ ᴅᴇ ᴄᴏʀʙᴇɪʟʟᴇ !{e}**")
