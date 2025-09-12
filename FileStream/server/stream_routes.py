@@ -42,10 +42,13 @@ async def stream_handler(request: web.Request):
         raise web.HTTPNotFound(text=e.message)
     except (AttributeError, BadStatusLine, ConnectionResetError):
         pass
-
+    except Exception as e:
+        traceback.print_exc()
+        logging.critical(e.with_traceback(None))
+        raise web.HTTPInternalServerError(text=str(e))
 
 @routes.get("/dl/{path}", allow_head=True)
-async def stream_handler(request: web.Request):
+async def download_handler(request: web.Request):
     try:
         path = request.match_info["path"]
         return await media_streamer(request, path)
@@ -70,7 +73,7 @@ async def media_streamer(request: web.Request, db_id: str):
     faster_client = multi_clients[index]
     
     if Telegram.MULTI_CLIENT:
-        logging.info(f"Client {index} is now serving {request.headers.get('X-FORWARDED-FOR',request.remote)}")
+        logging.info(f"Client {index} is now serving {request.remote}")
 
     if faster_client in class_cache:
         tg_connect = class_cache[faster_client]
@@ -79,10 +82,8 @@ async def media_streamer(request: web.Request, db_id: str):
         logging.debug(f"Creating new ByteStreamer object for client {index}")
         tg_connect = utils.ByteStreamer(faster_client)
         class_cache[faster_client] = tg_connect
-    logging.debug("before calling get_file_properties")
-    file_id = await tg_connect.get_file_properties(db_id, multi_clients)
-    logging.debug("after calling get_file_properties")
     
+    file_id = await tg_connect.get_file_properties(db_id, multi_clients)
     file_size = file_id.file_size
 
     if range_header:
@@ -120,17 +121,22 @@ async def media_streamer(request: web.Request, db_id: str):
     if not mime_type:
         mime_type = mimetypes.guess_type(file_name)[0] or "application/octet-stream"
 
-    # if "video/" in mime_type or "audio/" in mime_type:
-    #     disposition = "inline"
+    if mime_type.startswith("video/") or mime_type.startswith("audio/"):
+        disposition = "inline"
+
+    headers = {
+        "Content-Type": f"{mime_type}",
+        "Content-Range": f"bytes {from_bytes}-{until_bytes}/{file_size}",
+        "Content-Length": str(req_length),
+        "Content-Disposition": f'{disposition}; filename="{file_name}"',
+        "Accept-Ranges": "bytes",
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Headers": "Range",
+        "Access-Control-Expose-Headers": "Content-Range, Content-Length, Accept-Ranges"
+    }
 
     return web.Response(
         status=206 if range_header else 200,
         body=body,
-        headers={
-            "Content-Type": f"{mime_type}",
-            "Content-Range": f"bytes {from_bytes}-{until_bytes}/{file_size}",
-            "Content-Length": str(req_length),
-            "Content-Disposition": f'{disposition}; filename="{file_name}"',
-            "Accept-Ranges": "bytes",
-        },
+        headers=headers
     )
