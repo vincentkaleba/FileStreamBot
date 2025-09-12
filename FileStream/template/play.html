@@ -10,6 +10,8 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Plyr CSS -->
+    <link rel="stylesheet" href="https://cdn.plyr.io/3.7.8/plyr.css">
     <style>
         :root {
             --primary: #4361ee;
@@ -181,11 +183,8 @@
             box-shadow: var(--shadow);
         }
 
-        .player {
-            width: 100%;
-            height: auto;
+        .plyr {
             border-radius: var(--radius);
-            background: #000;
         }
 
         .file-name {
@@ -399,6 +398,44 @@
             color: var(--secondary);
         }
 
+        /* Loading spinner */
+        .loading {
+            display: none;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid var(--primary);
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Error message */
+        .error-message {
+            display: none;
+            background: #ffebee;
+            color: #c62828;
+            padding: 15px;
+            border-radius: var(--radius);
+            margin: 20px 0;
+            text-align: center;
+        }
+
+        body.dark .error-message {
+            background: #4a2323;
+            color: #ff8a80;
+        }
+
         /* Responsive adjustments */
         @media (max-width: 768px) {
             .downloadBtn {
@@ -446,16 +483,6 @@
                 padding: 20px;
             }
         }
-
-        /* Plyr player customization */
-        .plyr {
-            border-radius: var(--radius);
-            margin-bottom: 20px;
-        }
-
-        .plyr--video {
-            background: #000;
-        }
     </style>
 </head>
 
@@ -469,6 +496,7 @@
         <div class="nryt">
             <a class="nav-btn" href="#main">ACCUEIL</a>
             <a href="#abtus" class="nav-btn">À PROPOS</a>
+            <button class="nav-btn" onclick="toggleDarkMode()">🌙/☀️</button>
         </div>
     </nav>
     
@@ -481,16 +509,37 @@
     <div class="outer">
         <div class="inner">
             <div class="main" id="main">
-                <div class="player-container">
-                    <video id="player" class="player" src="{{file_url}}" type="video/mp4" playsinline controls
-                        width="100%"></video>
+                <div class="loading" id="loading">
+                    <div class="spinner"></div>
+                    <p>Chargement de la vidéo...</p>
                 </div>
+                
+                <div class="error-message" id="errorMessage">
+                    Erreur de chargement de la vidéo. Veuillez réessayer.
+                </div>
+
+                <div class="player-container" id="playerContainer">
+                    <video 
+                        id="player" 
+                        class="player" 
+                        playsinline 
+                        controls
+                        data-plyr-config='{"hideControls": false}'
+                        width="100%">
+                        <source src="{{file_url}}" type="{{mime_type}}">
+                        Votre navigateur ne supporte pas la lecture vidéo.
+                    </video>
+                </div>
+                
                 <div class="file-name">
                     <h4>Nom du fichier: </h4>
                     <p id="myDiv">{{file_name}}</p><br>
                     <h4>Taille du fichier: </h4>
                     <p>{{file_size}}</p>
+                    <h4>Type: </h4>
+                    <p>{{mime_type}}</p>
                 </div>
+                
                 <div class="downloadBtn">
                     <button onclick="streamDownload()">
                         <img src="https://i.ibb.co/RjzYttX/dl.png" alt="Télécharger">Télécharger la vidéo
@@ -518,7 +567,7 @@
                             <p>
                                 Ceci est un bot Telegram pour streamer des <span>films</span> et des <span>séries</span> directement sur
                                 Telegram. Vous pouvez également les <span>télécharger</span> si vous le souhaitez. Ce bot est développé par <a
-                                    href="https://github.com/AviPatilPro"><span>Avi</span></a>.
+                                    href="https://github.com/kalebavincent"><span>Hyosh Coder</span></a>.
                                 <br><br>Si vous aimez ce bot, n'oubliez pas de le partager avec vos amis et votre famille.
                             </p>
                         </div>
@@ -578,8 +627,87 @@
         </footer>
     </div>
 
+    <!-- Plyr JS -->
+    <script src="https://cdn.plyr.io/3.7.8/plyr.polyfilled.js"></script>
     <script>
-        // Scripts de base pour la fonctionnalité
+        // Configuration et initialisation
+        document.addEventListener('DOMContentLoaded', function() {
+            initializePlayer();
+            setupEventListeners();
+            checkFormatSupport();
+        });
+
+        // Initialiser le lecteur Plyr
+        function initializePlayer() {
+            const player = new Plyr('#player', {
+                hideControls: false,
+                controls: [
+                    'play-large',
+                    'play',
+                    'progress',
+                    'current-time',
+                    'duration',
+                    'mute',
+                    'volume',
+                    'settings',
+                    'pip',
+                    'fullscreen'
+                ],
+                settings: ['quality', 'speed'],
+                autoplay: false
+            });
+
+            // Gérer les événements du lecteur
+            player.on('ready', function() {
+                console.log('Player ready');
+                document.getElementById('loading').style.display = 'none';
+            });
+
+            player.on('error', function(event) {
+                console.error('Player error:', event.detail);
+                showError('Erreur de lecture: Format non supporté ou problème de réseau');
+            });
+
+            window.player = player;
+        }
+
+        // Configurer les écouteurs d'événements
+        function setupEventListeners() {
+            const video = document.getElementById('player');
+            
+            video.addEventListener('loadstart', function() {
+                document.getElementById('loading').style.display = 'block';
+            });
+
+            video.addEventListener('loadeddata', function() {
+                document.getElementById('loading').style.display = 'none';
+            });
+
+            video.addEventListener('error', function(e) {
+                console.error('Video error:', e);
+                showError('Erreur de chargement de la vidéo');
+            });
+        }
+
+        // Vérifier le support du format
+        function checkFormatSupport() {
+            const video = document.getElementById('player');
+            const mimeType = "{{mime_type}}";
+            
+            if (video.canPlayType(mimeType) === '') {
+                showError('Format non supporté par votre navigateur. Utilisez le téléchargement.');
+            }
+        }
+
+        // Afficher les erreurs
+        function showError(message) {
+            const errorDiv = document.getElementById('errorMessage');
+            errorDiv.textContent = message;
+            errorDiv.style.display = 'block';
+            document.getElementById('loading').style.display = 'none';
+        }
+
+        // Fonctions de téléchargement et partage
         function streamDownload() {
             window.location.href = "{{file_url}}";
         }
@@ -587,7 +715,10 @@
         function copyStreamLink() {
             navigator.clipboard.writeText("{{file_url}}")
                 .then(() => alert("Lien copié dans le presse-papier!"))
-                .catch(err => console.error('Erreur lors de la copie: ', err));
+                .catch(err => {
+                    console.error('Erreur lors de la copie: ', err);
+                    alert("Erreur lors de la copie du lien");
+                });
         }
 
         function vlc_player() {
@@ -602,10 +733,26 @@
             window.open(`nplayer-{{file_url}}`, '_blank');
         }
 
-        // Fonction factice pour la démo (normalement dans script.js)
-        function getDets() {
-            alert("Fonctionnalité de suggestion de films - À implémenter");
+        // Mode sombre/clair
+        function toggleDarkMode() {
+            document.body.classList.toggle('dark');
+            localStorage.setItem('darkMode', document.body.classList.contains('dark'));
         }
+
+        // Charger le mode sombre depuis le stockage local
+        if (localStorage.getItem('darkMode') === 'true') {
+            document.body.classList.add('dark');
+        }
+
+        // Fonction factice pour la démo
+        function getDets() {
+            alert("Fonctionnalité de suggestion de films - arrive bientôt ");
+        }
+
+        // Gestion des erreurs globales
+        window.addEventListener('error', function(e) {
+            console.error('Global error:', e.error);
+        });
     </script>
 </body>
 </html>
