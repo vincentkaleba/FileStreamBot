@@ -12,6 +12,8 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <!-- Plyr CSS -->
     <link rel="stylesheet" href="https://cdn.plyr.io/3.7.8/plyr.css">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
             --primary: #4361ee;
@@ -26,6 +28,7 @@
             --card-dark: #1e1e1e;
             --transition: all 0.3s ease;
             --shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+            --shadow-dark: 0 10px 20px rgba(0, 0, 0, 0.3);
             --radius: 12px;
             --header-height: 70px;
         }
@@ -56,7 +59,7 @@
             align-items: center;
             padding: 0 5%;
             height: var(--header-height);
-            background: rgba(255, 255, 255, 0.9);
+            background: rgba(255, 255, 255, 0.95);
             backdrop-filter: blur(10px);
             position: sticky;
             top: 0;
@@ -66,7 +69,8 @@
         }
 
         body.dark nav {
-            background: rgba(30, 30, 30, 0.9);
+            background: rgba(30, 30, 30, 0.95);
+            box-shadow: var(--shadow-dark);
         }
 
         #heading {
@@ -77,11 +81,15 @@
             background-clip: text;
             color: transparent;
             transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 10px;
         }
 
         .nryt {
             display: flex;
-            gap: 20px;
+            gap: 15px;
+            align-items: center;
         }
 
         .nav-btn {
@@ -94,12 +102,16 @@
             color: var(--text-dark);
             background: transparent;
             border: 1px solid transparent;
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
 
         .nav-btn:hover {
             background: var(--primary);
             color: white;
             transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(67, 97, 238, 0.3);
         }
 
         body.dark .nav-btn {
@@ -108,6 +120,43 @@
 
         body.dark .nav-btn:hover {
             background: var(--secondary);
+            box-shadow: 0 5px 15px rgba(247, 37, 133, 0.3);
+        }
+
+        /* Search bar */
+        .search-container {
+            position: relative;
+            margin: 0 20px;
+        }
+
+        .search-input {
+            padding: 10px 15px 10px 40px;
+            border-radius: 50px;
+            border: 1px solid rgba(0,0,0,0.1);
+            width: 250px;
+            transition: var(--transition);
+            background: rgba(255,255,255,0.8);
+            font-family: 'Inter', sans-serif;
+        }
+
+        body.dark .search-input {
+            background: rgba(30,30,30,0.8);
+            border: 1px solid rgba(255,255,255,0.1);
+            color: var(--text-light);
+        }
+
+        .search-input:focus {
+            outline: none;
+            width: 300px;
+            box-shadow: 0 0 0 2px var(--primary);
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #6c757d;
         }
 
         /* About navigation */
@@ -121,6 +170,7 @@
             margin: 20px 5%;
             border-radius: var(--radius);
             transition: var(--transition);
+            flex-wrap: wrap;
         }
 
         body.dark .about-nav {
@@ -137,11 +187,15 @@
             color: var(--text-dark);
             background: transparent;
             border: 1px solid var(--primary);
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
 
         .about-nav a:hover {
             background: var(--primary);
             color: white;
+            transform: translateY(-2px);
         }
 
         body.dark .about-nav a {
@@ -172,8 +226,10 @@
 
         body.dark .main {
             background: rgba(30, 30, 30, 0.9);
+            box-shadow: var(--shadow-dark);
         }
 
+        /* Player container */
         .player-container {
             position: relative;
             width: 100%;
@@ -187,32 +243,54 @@
             border-radius: var(--radius);
         }
 
-        .file-name {
+        /* File info */
+        .file-info {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
             margin: 20px 0;
-            padding: 15px;
-            background: rgba(67, 97, 238, 0.1);
-            border-radius: var(--radius);
-            transition: var(--transition);
         }
 
-        body.dark .file-name {
+        .info-card {
+            background: rgba(67, 97, 238, 0.1);
+            border-radius: var(--radius);
+            padding: 15px;
+            transition: var(--transition);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+
+        body.dark .info-card {
             background: rgba(247, 37, 133, 0.1);
         }
 
-        .file-name h4 {
-            font-weight: 600;
-            margin-right: 5px;
+        .info-card i {
+            font-size: 1.5rem;
+            margin-bottom: 10px;
             color: var(--primary);
         }
 
-        body.dark .file-name h4 {
+        body.dark .info-card i {
             color: var(--secondary);
         }
 
-        .file-name p {
+        .info-card h4 {
+            font-weight: 600;
+            margin-bottom: 5px;
+            color: var(--primary);
+        }
+
+        body.dark .info-card h4 {
+            color: var(--secondary);
+        }
+
+        .info-card p {
             font-weight: 400;
         }
 
+        /* Download buttons */
         .downloadBtn {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -252,12 +330,6 @@
             box-shadow: 0 6px 12px rgba(247, 37, 133, 0.4);
         }
 
-        .downloadBtn img {
-            height: 24px;
-            width: 24px;
-            object-fit: contain;
-        }
-
         /* About sections */
         .abt {
             margin: 40px 0;
@@ -275,6 +347,7 @@
 
         body.dark .abt-sec {
             background: rgba(30, 30, 30, 0.9);
+            box-shadow: var(--shadow-dark);
         }
 
         .abt-sec h1 {
@@ -282,6 +355,10 @@
             margin-bottom: 25px;
             font-size: 2rem;
             color: var(--primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
         }
 
         body.dark .abt-sec h1 {
@@ -323,11 +400,15 @@
             font-weight: 500;
             cursor: pointer;
             transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
 
         .links button:hover {
             background: var(--primary-dark);
             transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(67, 97, 238, 0.3);
         }
 
         body.dark .links button {
@@ -336,6 +417,7 @@
 
         body.dark .links button:hover {
             background: #e5127a;
+            box-shadow: 0 5px 15px rgba(247, 37, 133, 0.3);
         }
 
         /* Footer */
@@ -354,6 +436,59 @@
             margin-bottom: 30px;
         }
 
+        .movie-suggestions {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .movie-card {
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: var(--radius);
+            overflow: hidden;
+            transition: var(--transition);
+            box-shadow: var(--shadow);
+            cursor: pointer;
+        }
+
+        body.dark .movie-card {
+            background: rgba(30, 30, 30, 0.8);
+            box-shadow: var(--shadow-dark);
+        }
+
+        .movie-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .movie-poster {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+        }
+
+        .movie-info {
+            padding: 15px;
+        }
+
+        .movie-title {
+            font-weight: 600;
+            margin-bottom: 5px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .movie-year {
+            color: #6c757d;
+            font-size: 0.9rem;
+        }
+
+        body.dark .movie-year {
+            color: #adb5bd;
+        }
+
         .ranMovBtn {
             padding: 12px 25px;
             border: none;
@@ -364,11 +499,16 @@
             cursor: pointer;
             transition: var(--transition);
             margin-top: 20px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin: 20px auto;
         }
 
         .ranMovBtn:hover {
             background: var(--primary-dark);
             transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(67, 97, 238, 0.3);
         }
 
         body.dark .ranMovBtn {
@@ -377,12 +517,17 @@
 
         body.dark .ranMovBtn:hover {
             background: #e5127a;
+            box-shadow: 0 5px 15px rgba(247, 37, 133, 0.3);
         }
 
         .copyright {
             margin-top: 30px;
             color: #6c757d;
             font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
         }
 
         body.dark .copyright {
@@ -392,6 +537,9 @@
         .copyright a {
             color: var(--primary);
             text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 5px;
         }
 
         body.dark .copyright a {
@@ -436,7 +584,82 @@
             color: #ff8a80;
         }
 
+        /* Toast notification */
+        .toast {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: var(--primary);
+            color: white;
+            padding: 15px 25px;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            z-index: 10000;
+            transform: translateY(100px);
+            opacity: 0;
+            transition: all 0.3s ease;
+        }
+
+        .toast.show {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        body.dark .toast {
+            background: var(--secondary);
+        }
+
+        /* Mobile menu */
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--text-dark);
+        }
+
+        body.dark .mobile-menu-btn {
+            color: var(--text-light);
+        }
+
+        /* Progress bar */
+        .progress-container {
+            width: 100%;
+            height: 5px;
+            background: rgba(67, 97, 238, 0.2);
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 1001;
+            display: none;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background: var(--primary);
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+
+        body.dark .progress-bar {
+            background: var(--secondary);
+        }
+
         /* Responsive adjustments */
+        @media (max-width: 992px) {
+            .search-input {
+                width: 200px;
+            }
+            
+            .search-input:focus {
+                width: 250px;
+            }
+        }
+
         @media (max-width: 768px) {
             .downloadBtn {
                 grid-template-columns: 1fr;
@@ -462,17 +685,57 @@
             #heading {
                 font-size: 1.5rem;
             }
+            
+            .search-container {
+                display: none;
+            }
+            
+            .mobile-menu-btn {
+                display: block;
+            }
+            
+            .nryt .nav-btn:not(:last-child) {
+                display: none;
+            }
+            
+            .mobile-menu {
+                position: fixed;
+                top: var(--header-height);
+                left: 0;
+                width: 100%;
+                background: rgba(255, 255, 255, 0.95);
+                backdrop-filter: blur(10px);
+                padding: 20px;
+                box-shadow: var(--shadow);
+                transform: translateY(-100%);
+                opacity: 0;
+                transition: all 0.3s ease;
+                z-index: 999;
+            }
+            
+            body.dark .mobile-menu {
+                background: rgba(30, 30, 30, 0.95);
+            }
+            
+            .mobile-menu.show {
+                transform: translateY(0);
+                opacity: 1;
+            }
+            
+            .mobile-menu .nav-btn {
+                display: flex;
+                width: 100%;
+                margin-bottom: 10px;
+            }
+            
+            .file-info {
+                grid-template-columns: 1fr;
+            }
         }
 
         @media (max-width: 480px) {
             nav {
-                flex-direction: column;
-                height: auto;
-                padding: 15px;
-            }
-            
-            .nryt {
-                margin-top: 15px;
+                padding: 0 15px;
             }
             
             .outer {
@@ -482,28 +745,57 @@
             .main {
                 padding: 20px;
             }
+            
+            .abt-sec {
+                padding: 20px;
+            }
+            
+            .movie-suggestions {
+                grid-template-columns: 1fr;
+            }
         }
     </style>
 </head>
 
 <body>
+    <div class="progress-container" id="progressContainer">
+        <div class="progress-bar" id="progressBar"></div>
+    </div>
+    
     <nav>
         <div class="nleft">
             <a href="#">
-                <h3 id="heading">FILE STREAM</h3>
+                <h3 id="heading"><i class="fas fa-play-circle"></i>FILE STREAM</h3>
             </a>
         </div>
+        
+        <div class="search-container">
+            <i class="fas fa-search search-icon"></i>
+            <input type="text" class="search-input" placeholder="Rechercher des films..." id="searchInput">
+        </div>
+        
         <div class="nryt">
-            <a class="nav-btn" href="#main">ACCUEIL</a>
-            <a href="#abtus" class="nav-btn">À PROPOS</a>
-            <button class="nav-btn" onclick="toggleDarkMode()">🌙/☀️</button>
+            <a class="nav-btn" href="#main"><i class="fas fa-home"></i>ACCUEIL</a>
+            <a href="#abtus" class="nav-btn"><i class="fas fa-info-circle"></i>À PROPOS</a>
+            <button class="nav-btn" onclick="toggleDarkMode()" id="themeToggle"><i class="fas fa-moon"></i>MODE SOMBRE</button>
+            <button class="mobile-menu-btn" onclick="toggleMobileMenu()">
+                <i class="fas fa-bars"></i>
+            </button>
         </div>
     </nav>
     
+    <div class="mobile-menu" id="mobileMenu">
+        <a class="nav-btn" href="#main"><i class="fas fa-home"></i>ACCUEIL</a>
+        <a href="#abtus" class="nav-btn"><i class="fas fa-info-circle"></i>À PROPOS</a>
+        <a href="#channels" class="nav-btn"><i class="fas fa-users"></i>CHAÎNES</a>
+        <a href="#contact" class="nav-btn"><i class="fas fa-envelope"></i>CONTACT</a>
+        <button class="nav-btn" onclick="toggleDarkMode()"><i class="fas fa-moon"></i>MODE SOMBRE</button>
+    </div>
+    
     <div class="about-nav">
-        <a href="#abtus" class="wlcm">BIENVENUE</a>
-        <a href="#channels" class="abt-chnl">CHAÎNES</a>
-        <a href="#contact" class="contact-btn">CONTACT</a>
+        <a href="#abtus" class="wlcm"><i class="fas fa-star"></i>BIENVENUE</a>
+        <a href="#channels" class="abt-chnl"><i class="fas fa-users"></i>CHAÎNES</a>
+        <a href="#contact" class="contact-btn"><i class="fas fa-envelope"></i>CONTACT</a>
     </div>
 
     <div class="outer">
@@ -518,10 +810,9 @@
                     Erreur de chargement de la vidéo. Veuillez réessayer.
                 </div>
 
-                <div class="player-container" id="playerContainer">
+                <div class="player-container">
                     <video 
                         id="player" 
-                        class="player" 
                         playsinline 
                         controls
                         data-plyr-config='{"hideControls": false}'
@@ -531,30 +822,39 @@
                     </video>
                 </div>
                 
-                <div class="file-name">
-                    <h4>Nom du fichier: </h4>
-                    <p id="myDiv">{{file_name}}</p><br>
-                    <h4>Taille du fichier: </h4>
-                    <p>{{file_size}}</p>
-                    <h4>Type: </h4>
-                    <p>{{mime_type}}</p>
+                <div class="file-info">
+                    <div class="info-card">
+                        <i class="fas fa-file-video"></i>
+                        <h4>Nom du fichier</h4>
+                        <p id="myDiv">{{file_name}}</p>
+                    </div>
+                    <div class="info-card">
+                        <i class="fas fa-weight-hanging"></i>
+                        <h4>Taille du fichier</h4>
+                        <p>{{file_size}}</p>
+                    </div>
+                    <div class="info-card">
+                        <i class="fas fa-file-alt"></i>
+                        <h4>Type</h4>
+                        <p>{{mime_type}}</p>
+                    </div>
                 </div>
                 
                 <div class="downloadBtn">
                     <button onclick="streamDownload()">
-                        <img src="https://i.ibb.co/RjzYttX/dl.png" alt="Télécharger">Télécharger la vidéo
+                        <i class="fas fa-download"></i>Télécharger la vidéo
                     </button>
                     <button onclick="copyStreamLink()">
-                        <img src="https://i.ibb.co/CM4Y586/link.png" alt="Copier le lien">Copier le lien
+                        <i class="fas fa-link"></i>Copier le lien
                     </button>
                     <button onclick="vlc_player()">
-                        <img src="https://i.ibb.co/px6fQs1/vlc.png" alt="VLC">Regarder dans VLC
+                        <i class="fas fa-play-circle"></i>Regarder dans VLC
                     </button>
                     <button onclick="mx_player()">
-                        <img src="https://i.ibb.co/41WvtQ3/mx.png" alt="MX Player">Regarder dans MX Player
+                        <i class="fas fa-play-circle"></i>Regarder dans MX Player
                     </button>
                     <button onclick="n_player()">
-                        <img src="https://i.ibb.co/Hd2dS4t/nPlayer.png" alt="nPlayer">Regarder dans nPlayer
+                        <i class="fas fa-play-circle"></i>Regarder dans nPlayer
                     </button>
                 </div>
             </div>
@@ -563,7 +863,7 @@
                 <div class="about">
                     <div class="about-dets">
                         <div class="abt-sec" id="abtus">
-                            <h1>BIENVENUE SUR NOTRE BOT <Span>FILE STREAM</Span></h1>
+                            <h1><i class="fas fa-info-circle"></i>BIENVENUE SUR NOTRE BOT <Span>FILE STREAM</Span></h1>
                             <p>
                                 Ceci est un bot Telegram pour streamer des <span>films</span> et des <span>séries</span> directement sur
                                 Telegram. Vous pouvez également les <span>télécharger</span> si vous le souhaitez. Ce bot est développé par <a
@@ -573,28 +873,29 @@
                         </div>
 
                         <div class="abt-sec" id="channels">
-                            <h1>REJOIGNEZ NOS CHAÎNES <span>TELEGRAM</span></h1>
+                            <h1><i class="fas fa-users"></i>REJOIGNEZ NOS CHAÎNES <span>TELEGRAM</span></h1>
                             <div class="links chnl-link">
                                 <a href="https://t.me/hebdopremuim">
-                                    <button>нєв∂σ ρяємιυм</button>
+                                    <button><i class="fab fa-telegram"></i>нєв∂σ ρяємιυм</button>
                                 </a>
                                 <a href="https://t.me/french_animation">
-                                    <button>𝐅𝐫𝐞𝐧𝐜𝐡 𝐀𝐧𝐢𝐦𝐚𝐭𝐢𝐨𝐧 🇫🇷</button>
+                                    <button><i class="fab fa-telegram"></i>𝐅𝐫𝐞𝐧𝐜𝐡 𝐀𝐧𝐢𝐦𝐚𝐭𝐢𝐨𝐧 🇫🇷</button>
                                 </a>
                                 <a href="https://t.me/hyoshmangavf">
-                                    <button>тσυт мαиgα cσηfση∂υ νƒ | ᴠᴏsᴛꜰʀ</button>
+                                    <button><i class="fab fa-telegram"></i>тσυт мαиgα cσηfση∂υ νƒ | ᴠᴏsᴛꜰʀ</button>
                                 </a>
                                 <a href="https://t.me/MangasAnimesWord">
-                                    <button>° MANGAS ANIMES WORLD ™ 🎌</button>
+                                    <button><i class="fab fa-telegram"></i>° MANGAS ANIMES WORLD ™ 🎌</button>
                                 </a>
                             </div>
                         </div>
 
                         <div class="abt-sec" id="contact">
+                            <h1><i class="fas fa-envelope"></i>CONTACTEZ-NOUS</h1>
                             <p>Signalez les bugs et contactez-nous sur Telegram ci-dessous</p>
                             <div class="links contact">
                                 <a href="https://t.me/hyoshdesign">
-                                    <button>CONTACT</button>
+                                    <button><i class="fas fa-paper-plane"></i>CONTACT</button>
                                 </a>
                             </div>
                         </div>
@@ -606,25 +907,25 @@
         <footer>
             <center>
                 <div class="movie-cont">
-                    <div class="movieSug">
-                        <div class="movieDets"></div>
-                        <div class="movieimg">
-                            <img src="">
-                        </div>
+                    <h2><i class="fas fa-film"></i> Suggestions de films</h2>
+                    <div class="movie-suggestions" id="movieSuggestions">
+                        <!-- Movie suggestions will be loaded here -->
                     </div>
-                    <div class="low-width-movie-dets">
-                        <div class="movieStsBar">
-                            <div class="movieDets-mini"></div>
-                        </div>
-                    </div>
-                    <button class="ranMovBtn" onclick="getDets()">Plus de suggestions de films</button>
+                    <button class="ranMovBtn" onclick="loadMovieSuggestions()">
+                        <i class="fas fa-sync-alt"></i>Plus de suggestions
+                    </button>
                 </div>
 
                 <div class="copyright">
-                    <h5>Copyright © 2025 <a href="https://github.com/kalebavincent">Hyosh Coder</a>. Tous droits réservés.</h5>
+                    <h5><i class="far fa-copyright"></i>Copyright 2025 <a href="https://github.com/kalebavincent"><i class="fab fa-github"></i>Hyosh Coder</a>. Tous droits réservés.</h5>
                 </div>
             </center>
         </footer>
+    </div>
+
+    <div class="toast" id="toast">
+        <i class="fas fa-check-circle"></i>
+        <span id="toastMessage">Opération réussie</span>
     </div>
 
     <!-- Plyr JS -->
@@ -635,6 +936,9 @@
             initializePlayer();
             setupEventListeners();
             checkFormatSupport();
+            updateThemeButton();
+            loadMovieSuggestions();
+            initializeSearch();
         });
 
         // Initialiser le lecteur Plyr
@@ -687,6 +991,9 @@
                 console.error('Video error:', e);
                 showError('Erreur de chargement de la vidéo');
             });
+
+            // Écouter le défilement pour la barre de progression
+            window.addEventListener('scroll', updateProgressBar);
         }
 
         // Vérifier le support du format
@@ -709,15 +1016,19 @@
 
         // Fonctions de téléchargement et partage
         function streamDownload() {
-            window.location.href = "{{file_url}}";
+            showProgressBar();
+            setTimeout(() => {
+                window.location.href = "{{file_url}}";
+                hideProgressBar();
+            }, 1000);
         }
 
         function copyStreamLink() {
             navigator.clipboard.writeText("{{file_url}}")
-                .then(() => alert("Lien copié dans le presse-papier!"))
+                .then(() => showToast("Lien copié dans le presse-papier!"))
                 .catch(err => {
                     console.error('Erreur lors de la copie: ', err);
-                    alert("Erreur lors de la copie du lien");
+                    showToast("Erreur lors de la copie du lien", false);
                 });
         }
 
@@ -737,6 +1048,21 @@
         function toggleDarkMode() {
             document.body.classList.toggle('dark');
             localStorage.setItem('darkMode', document.body.classList.contains('dark'));
+            updateThemeButton();
+        }
+
+        // Mettre à jour le texte du bouton de thème
+        function updateThemeButton() {
+            const themeToggle = document.getElementById('themeToggle');
+            const icon = themeToggle.querySelector('i');
+            
+            if (document.body.classList.contains('dark')) {
+                icon.className = 'fas fa-sun';
+                themeToggle.innerHTML = '<i class="fas fa-sun"></i>MODE CLAIR';
+            } else {
+                icon.className = 'fas fa-moon';
+                themeToggle.innerHTML = '<i class="fas fa-moon"></i>MODE SOMBRE';
+            }
         }
 
         // Charger le mode sombre depuis le stockage local
@@ -744,12 +1070,103 @@
             document.body.classList.add('dark');
         }
 
-        // Fonction factice pour la démo
-        function getDets() {
-            alert("Fonctionnalité de suggestion de films - arrive bientôt ");
+        // Afficher une notification toast
+        function showToast(message, isSuccess = true) {
+            const toast = document.getElementById('toast');
+            const toastMessage = document.getElementById('toastMessage');
+            const icon = toast.querySelector('i');
+            
+            toastMessage.textContent = message;
+            
+            if (isSuccess) {
+                toast.style.background = 'var(--primary)';
+                icon.className = 'fas fa-check-circle';
+            } else {
+                toast.style.background = '#e74c3c';
+                icon.className = 'fas fa-exclamation-circle';
+            }
+            
+            toast.classList.add('show');
+            
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000);
         }
 
-        // Gestion des erreurs globales
+        // Menu mobile
+        function toggleMobileMenu() {
+            const mobileMenu = document.getElementById('mobileMenu');
+            mobileMenu.classList.toggle('show');
+        }
+
+        // Mettre à jour la barre de progression
+        function updateProgressBar() {
+            const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+            const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            const scrolled = (winScroll / height) * 100;
+            document.getElementById("progressBar").style.width = scrolled + "%";
+        }
+
+        function showProgressBar() {
+            document.getElementById("progressContainer").style.display = "block";
+        }
+
+        function hideProgressBar() {
+            document.getElementById("progressContainer").style.display = "none";
+            document.getElementById("progressBar").style.width = "0%";
+        }
+
+        // Charger les suggestions de films
+        function loadMovieSuggestions() {
+            const moviesContainer = document.getElementById('movieSuggestions');
+            moviesContainer.innerHTML = '';
+            
+            // Simulation de chargement
+            showProgressBar();
+            
+            // Films factices pour la démonstration
+            const movies = [
+                { title: "The Dark Knight", year: 2008, poster: "https://m.media-amazon.com/images/M/MV5BMTMxNTMwODM0NF5BMl5BanBnXkFtZTcwODAyMTk2Mw@@._V1_.jpg" },
+                { title: "Inception", year: 2010, poster: "https://m.media-amazon.com/images/M/MV5BMjAxMzY3NjcxNF5BMl5BanBnXkFtZTcwNTI5OTM0Mw@@._V1_.jpg" },
+                { title: "Interstellar", year: 2014, poster: "https://m.media-amazon.com/images/M/MV5BZjdkOTU3MDktN2IxOS00OGEyLWFmMjktY2FiMmZkNWIyODZiXkEyXkFqcGdeQXVyMTMxODk2OTU@._V1_.jpg" },
+                { title: "The Shawshank Redemption", year: 1994, poster: "https://m.media-amazon.com/images/M/MV5BNDE3ODcxYzMtY2YzZC00NmNlLWJiNDMtZDViZWM2MzIxZDYwXkEyXkFqcGdeQXVyNjAwNDUxODI@._V1_.jpg" }
+            ];
+            
+            setTimeout(() => {
+                movies.forEach(movie => {
+                    const movieCard = document.createElement('div');
+                    movieCard.className = 'movie-card';
+                    movieCard.innerHTML = `
+                        <img src="${movie.poster}" alt="${movie.title}" class="movie-poster" onerror="this.src='https://via.placeholder.com/200x300/4361ee/ffffff?text=Movie'">
+                        <div class="movie-info">
+                            <div class="movie-title">${movie.title}</div>
+                            <div class="movie-year">${movie.year}</div>
+                        </div>
+                    `;
+                    movieCard.addEventListener('click', () => {
+                        showToast(`Ouverture de ${movie.title}`);
+                    });
+                    moviesContainer.appendChild(movieCard);
+                });
+                hideProgressBar();
+            }, 1000);
+        }
+
+        // Initialiser la recherche
+        function initializeSearch() {
+            const searchInput = document.getElementById('searchInput');
+            
+            searchInput.addEventListener('keyup', function(event) {
+                if (event.key === 'Enter') {
+                    const query = searchInput.value.trim();
+                    if (query.length > 0) {
+                        showToast(`Recherche de "${query}"`);
+                        // Ici vous pourriez implémenter la recherche réelle
+                    }
+                }
+            });
+        }
+
         window.addEventListener('error', function(e) {
             console.error('Global error:', e.error);
         });
