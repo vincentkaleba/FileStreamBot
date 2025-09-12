@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 
 <head>
     <meta charset="UTF-8">
@@ -7,165 +7,605 @@
     <title>FileStreamBot | {{file_name}}</title>
     <link rel="icon" href="https://i.ibb.co/Hh4kF2b/icon.png" type="image/x-icon">
     <link rel="shortcut icon" href="https://i.ibb.co/Hh4kF2b/icon.png" type="image/x-icon">
-    <link rel="stylesheet" href="https://unpkg.com/sheryjs/dist/Shery.css" />
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/proavipatil/data@main/fs/src/style.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/proavipatil/data@main/fs/src/plyr.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@500;700&display=swap" rel="stylesheet">
-    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #4361ee;
+            --primary-dark: #3a56d4;
+            --secondary: #f72585;
+            --accent: #7209b7;
+            --text-light: #f8f9fa;
+            --text-dark: #212529;
+            --bg-light: #ffffff;
+            --bg-dark: #121212;
+            --card-light: #f8f9fa;
+            --card-dark: #1e1e1e;
+            --transition: all 0.3s ease;
+            --shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+            --radius: 12px;
+            --header-height: 70px;
+        }
 
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            color: var(--text-dark);
+            min-height: 100vh;
+            transition: var(--transition);
+        }
+
+        body.dark {
+            background: linear-gradient(135deg, #232526 0%, #414345 100%);
+            color: var(--text-light);
+        }
+
+        /* Navigation */
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 5%;
+            height: var(--header-height);
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+        }
+
+        body.dark nav {
+            background: rgba(30, 30, 30, 0.9);
+        }
+
+        #heading {
+            font-weight: 700;
+            font-size: 1.8rem;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            transition: var(--transition);
+        }
+
+        .nryt {
+            display: flex;
+            gap: 20px;
+        }
+
+        .nav-btn {
+            padding: 10px 20px;
+            border-radius: 50px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: var(--transition);
+            text-decoration: none;
+            color: var(--text-dark);
+            background: transparent;
+            border: 1px solid transparent;
+        }
+
+        .nav-btn:hover {
+            background: var(--primary);
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        body.dark .nav-btn {
+            color: var(--text-light);
+        }
+
+        body.dark .nav-btn:hover {
+            background: var(--secondary);
+        }
+
+        /* About navigation */
+        .about-nav {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            padding: 20px 0;
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(5px);
+            margin: 20px 5%;
+            border-radius: var(--radius);
+            transition: var(--transition);
+        }
+
+        body.dark .about-nav {
+            background: rgba(30, 30, 30, 0.7);
+        }
+
+        .about-nav a {
+            padding: 10px 25px;
+            border-radius: 50px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: var(--transition);
+            text-decoration: none;
+            color: var(--text-dark);
+            background: transparent;
+            border: 1px solid var(--primary);
+        }
+
+        .about-nav a:hover {
+            background: var(--primary);
+            color: white;
+        }
+
+        body.dark .about-nav a {
+            color: var(--text-light);
+            border: 1px solid var(--secondary);
+        }
+
+        body.dark .about-nav a:hover {
+            background: var(--secondary);
+        }
+
+        /* Main content */
+        .outer {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .main {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            border-radius: var(--radius);
+            padding: 30px;
+            box-shadow: var(--shadow);
+            margin-bottom: 30px;
+            transition: var(--transition);
+        }
+
+        body.dark .main {
+            background: rgba(30, 30, 30, 0.9);
+        }
+
+        .player-container {
+            position: relative;
+            width: 100%;
+            margin-bottom: 25px;
+            border-radius: var(--radius);
+            overflow: hidden;
+            box-shadow: var(--shadow);
+        }
+
+        .player {
+            width: 100%;
+            height: auto;
+            border-radius: var(--radius);
+            background: #000;
+        }
+
+        .file-name {
+            margin: 20px 0;
+            padding: 15px;
+            background: rgba(67, 97, 238, 0.1);
+            border-radius: var(--radius);
+            transition: var(--transition);
+        }
+
+        body.dark .file-name {
+            background: rgba(247, 37, 133, 0.1);
+        }
+
+        .file-name h4 {
+            font-weight: 600;
+            margin-right: 5px;
+            color: var(--primary);
+        }
+
+        body.dark .file-name h4 {
+            color: var(--secondary);
+        }
+
+        .file-name p {
+            font-weight: 400;
+        }
+
+        .downloadBtn {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 25px;
+        }
+
+        .downloadBtn button {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            padding: 15px;
+            border: none;
+            border-radius: var(--radius);
+            background: var(--primary);
+            color: white;
+            font-weight: 500;
+            cursor: pointer;
+            transition: var(--transition);
+            box-shadow: 0 4px 6px rgba(67, 97, 238, 0.3);
+        }
+
+        .downloadBtn button:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(67, 97, 238, 0.4);
+        }
+
+        body.dark .downloadBtn button {
+            background: var(--secondary);
+            box-shadow: 0 4px 6px rgba(247, 37, 133, 0.3);
+        }
+
+        body.dark .downloadBtn button:hover {
+            background: #e5127a;
+            box-shadow: 0 6px 12px rgba(247, 37, 133, 0.4);
+        }
+
+        .downloadBtn img {
+            height: 24px;
+            width: 24px;
+            object-fit: contain;
+        }
+
+        /* About sections */
+        .abt {
+            margin: 40px 0;
+        }
+
+        .abt-sec {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            border-radius: var(--radius);
+            padding: 40px;
+            margin-bottom: 30px;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+        }
+
+        body.dark .abt-sec {
+            background: rgba(30, 30, 30, 0.9);
+        }
+
+        .abt-sec h1 {
+            text-align: center;
+            margin-bottom: 25px;
+            font-size: 2rem;
+            color: var(--primary);
+        }
+
+        body.dark .abt-sec h1 {
+            color: var(--secondary);
+        }
+
+        .abt-sec span {
+            font-weight: 700;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .abt-sec p {
+            line-height: 1.8;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .links {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-top: 25px;
+        }
+
+        .links a {
+            text-decoration: none;
+        }
+
+        .links button {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 50px;
+            background: var(--primary);
+            color: white;
+            font-weight: 500;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .links button:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+        }
+
+        body.dark .links button {
+            background: var(--secondary);
+        }
+
+        body.dark .links button:hover {
+            background: #e5127a;
+        }
+
+        /* Footer */
+        footer {
+            margin-top: 60px;
+            padding: 30px 0;
+            border-top: 1px solid rgba(0, 0, 0, 0.1);
+            transition: var(--transition);
+        }
+
+        body.dark footer {
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .movie-cont {
+            margin-bottom: 30px;
+        }
+
+        .ranMovBtn {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 50px;
+            background: var(--primary);
+            color: white;
+            font-weight: 500;
+            cursor: pointer;
+            transition: var(--transition);
+            margin-top: 20px;
+        }
+
+        .ranMovBtn:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+        }
+
+        body.dark .ranMovBtn {
+            background: var(--secondary);
+        }
+
+        body.dark .ranMovBtn:hover {
+            background: #e5127a;
+        }
+
+        .copyright {
+            margin-top: 30px;
+            color: #6c757d;
+            font-size: 0.9rem;
+        }
+
+        body.dark .copyright {
+            color: #adb5bd;
+        }
+
+        .copyright a {
+            color: var(--primary);
+            text-decoration: none;
+        }
+
+        body.dark .copyright a {
+            color: var(--secondary);
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .downloadBtn {
+                grid-template-columns: 1fr;
+            }
+            
+            .nryt {
+                gap: 10px;
+            }
+            
+            .nav-btn {
+                padding: 8px 15px;
+                font-size: 0.9rem;
+            }
+            
+            .about-nav {
+                flex-wrap: wrap;
+            }
+            
+            .abt-sec {
+                padding: 25px;
+            }
+            
+            #heading {
+                font-size: 1.5rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            nav {
+                flex-direction: column;
+                height: auto;
+                padding: 15px;
+            }
+            
+            .nryt {
+                margin-top: 15px;
+            }
+            
+            .outer {
+                padding: 10px;
+            }
+            
+            .main {
+                padding: 20px;
+            }
+        }
+
+        /* Plyr player customization */
+        .plyr {
+            border-radius: var(--radius);
+            margin-bottom: 20px;
+        }
+
+        .plyr--video {
+            background: #000;
+        }
+    </style>
 </head>
 
 <body>
     <nav>
         <div class="nleft">
             <a href="#">
-                <h3 id="heading" style="z-index: 100;" class="magnet title">FILE STREAM</h3>
+                <h3 id="heading">FILE STREAM</h3>
             </a>
         </div>
         <div class="nryt">
-            <a class="home-btn magnet" href="#main" onclick="toggleWidthnav(this)">HOME</a>
-
-            <a href="#abtus" class="about-btn magnet" onclick="toggleWidthnav(this)">ABOUT</a>
+            <a class="nav-btn" href="#main">ACCUEIL</a>
+            <a href="#abtus" class="nav-btn">À PROPOS</a>
         </div>
     </nav>
-    <center>
-        <div class="about-nav">
-            <a href="#abtus" class="wlcm magnet" onclick="toggleWidth(this)">WELCOME</a>
-            <a href="#channels" class="abt-chnl magnet" onclick="toggleWidth(this)">CHANNELS</a>
-            <a href="#contact" class="magnet contact-btn" onclick="toggleWidth(this)">CONTACT</a>
-        </div>
-    </center>
+    
+    <div class="about-nav">
+        <a href="#abtus" class="wlcm">BIENVENUE</a>
+        <a href="#channels" class="abt-chnl">CHAÎNES</a>
+        <a href="#contact" class="contact-btn">CONTACT</a>
+    </div>
 
     <div class="outer">
         <div class="inner">
             <div class="main" id="main">
-                <video id="player" class="player" src="{{file_url}}" type="video/mp4" playsinline controls
-                    width="100%"></video>
-                <div class="player"></div>
+                <div class="player-container">
+                    <video id="player" class="player" src="{{file_url}}" type="video/mp4" playsinline controls
+                        width="100%"></video>
+                </div>
                 <div class="file-name">
-                    <h4 style="display: inline;">File Name: </h4>
-                    <p style="display: inline;" id="myDiv">{{file_name}}</p><br>
-                    <h4 style="display: inline;">File Size: </h4>
-                    <p style="display: inline;">{{file_size}}</p>
+                    <h4>Nom du fichier: </h4>
+                    <p id="myDiv">{{file_name}}</p><br>
+                    <h4>Taille du fichier: </h4>
+                    <p>{{file_size}}</p>
                 </div>
                 <div class="downloadBtn">
-                    <button class="magnet" onclick="streamDownload()">
-                        <img style="height: 30px;" src="https://i.ibb.co/RjzYttX/dl.png" alt="">download video
+                    <button onclick="streamDownload()">
+                        <img src="https://i.ibb.co/RjzYttX/dl.png" alt="Télécharger">Télécharger la vidéo
                     </button>
-                    <button class="magnet" onclick="copyStreamLink()">
-                        <img src="https://i.ibb.co/CM4Y586/link.png" alt="Copy Link">copy link
+                    <button onclick="copyStreamLink()">
+                        <img src="https://i.ibb.co/CM4Y586/link.png" alt="Copier le lien">Copier le lien
                     </button>
-                    <button class="magnet" onclick="vlc_player()">
-                        <img src="https://i.ibb.co/px6fQs1/vlc.png" alt="">watch in VLC PLAYER
+                    <button onclick="vlc_player()">
+                        <img src="https://i.ibb.co/px6fQs1/vlc.png" alt="VLC">Regarder dans VLC
                     </button>
-                    <button class="magnet" onclick="mx_player()">
-                        <img src="https://i.ibb.co/41WvtQ3/mx.png" alt="">watch in MX PLAYER
+                    <button onclick="mx_player()">
+                        <img src="https://i.ibb.co/41WvtQ3/mx.png" alt="MX Player">Regarder dans MX Player
                     </button>
-                    <button class="magnet" onclick="n_player()">
-                        <img src="https://i.ibb.co/Hd2dS4t/nPlayer.png" alt="">watch in nPlayer
+                    <button onclick="n_player()">
+                        <img src="https://i.ibb.co/Hd2dS4t/nPlayer.png" alt="nPlayer">Regarder dans nPlayer
                     </button>
                 </div>
-
             </div>
+            
             <div class="abt">
                 <div class="about">
                     <div class="about-dets">
-
-                        <div class="abt-sec" id="abtus" style="padding: 160px 30px;">
-                            <h1 style="text-align: center;">WELCOME TO OUR <Span>FILE STREAM</Span> BOT</h1>
-                            <p style="text-align: center; line-height: 2;word-spacing: 2px;  letter-spacing: 0.8px;">
-                                This is a Telegram Bot to Stream <span>Movies</span> and <span>Series</span> directly on
-                                Telegram. You can also
-                                <span>download</span> them if you want. This bot is developed by <a
-                                    href="https://github.com/AviPatilPro"><span style="font-weight: 700;">Avi</span></a>
-                                <br><br>If you like this bot, then don't
-                                forget to share it with your friends and family.
+                        <div class="abt-sec" id="abtus">
+                            <h1>BIENVENUE SUR NOTRE BOT <Span>FILE STREAM</Span></h1>
+                            <p>
+                                Ceci est un bot Telegram pour streamer des <span>films</span> et des <span>séries</span> directement sur
+                                Telegram. Vous pouvez également les <span>télécharger</span> si vous le souhaitez. Ce bot est développé par <a
+                                    href="https://github.com/AviPatilPro"><span>Avi</span></a>.
+                                <br><br>Si vous aimez ce bot, n'oubliez pas de le partager avec vos amis et votre famille.
                             </p>
                         </div>
 
                         <div class="abt-sec" id="channels">
-                            <h1>JOIN OUR <span>TELEGRAM</span> CHANNELS</h1>
+                            <h1>REJOIGNEZ NOS CHAÎNES <span>TELEGRAM</span></h1>
                             <div class="links chnl-link">
-                                <a class="magnet" href="https://t.me/CheapieDeals">
-                                    <button>CHEAP DEALS</button>
+                                <a href="https://t.me/CheapieDeals">
+                                    <button>BONNES AFFAIRES</button>
                                 </a>
-                                <a class="magnet" href="https://t.me/FilmyPixel">
+                                <a href="https://t.me/FilmyPixel">
                                     <button>FILMYPIXEL</button>
                                 </a>
-                                <a class="magnet" href="https://t.me/PostersZone">
+                                <a href="https://t.me/PostersZone">
                                     <button>POSTERS ZONE</button>
                                 </a>
-                                <a class="magnet" href="https://t.me/EpitomeQuality">
-                                    <button>EPITOME QUALITY</button>
+                                <a href="https://t.me/EpitomeQuality">
+                                    <button>QUALITÉ EPITOME</button>
                                 </a>
                             </div>
                         </div>
 
                         <div class="abt-sec" id="contact">
-                            <p style="text-align: center;">Report Bugs and Contact us on Telegram Below</p>
+                            <p>Signalez les bugs et contactez-nous sur Telegram ci-dessous</p>
                             <div class="links contact">
                                 <a href="https://t.me/AvishkarPatil">
                                     <button>CONTACT</button>
                                 </a>
                             </div>
                         </div>
-
                     </div>
                 </div>
             </div>
         </div>
+        
         <footer>
             <center>
-
                 <div class="movie-cont">
                     <div class="movieSug">
-                        <div class="movieDets">
-
-                        </div>
+                        <div class="movieDets"></div>
                         <div class="movieimg">
                             <img src="">
                         </div>
                     </div>
                     <div class="low-width-movie-dets">
                         <div class="movieStsBar">
-                            <div class="movieDets-mini">
-
-                            </div>
+                            <div class="movieDets-mini"></div>
                         </div>
                     </div>
-                    <button class="ranMovBtn" onclick="getDets()">Get More Movies Suggestion</button>
+                    <button class="ranMovBtn" onclick="getDets()">Plus de suggestions de films</button>
                 </div>
 
-            </center>
-
-            <center>
                 <div class="copyright">
-                    <h5 class="text-center">Copyright © 2024 <a href="https://github.com/AviPatilPro"><span
-                                style="font-weight: 700;">Avishkar Patil</span></a>. All
-                        Rights Reserved.</h5>
+                    <h5>Copyright © 2024 <a href="https://github.com/AviPatilPro">Avishkar Patil</a>. Tous droits réservés.</h5>
                 </div>
             </center>
         </footer>
     </div>
+
+    <script>
+        // Scripts de base pour la fonctionnalité
+        function streamDownload() {
+            window.location.href = "{{file_url}}";
+        }
+
+        function copyStreamLink() {
+            navigator.clipboard.writeText("{{file_url}}")
+                .then(() => alert("Lien copié dans le presse-papier!"))
+                .catch(err => console.error('Erreur lors de la copie: ', err));
+        }
+
+        function vlc_player() {
+            window.open(`vlc://{{file_url}}`, '_blank');
+        }
+
+        function mx_player() {
+            window.open(`intent://{{file_url}}#Intent;package=com.mxtech.videoplayer.ad;end;`, '_blank');
+        }
+
+        function n_player() {
+            window.open(`nplayer-{{file_url}}`, '_blank');
+        }
+
+        // Fonction factice pour la démo (normalement dans script.js)
+        function getDets() {
+            alert("Fonctionnalité de suggestion de films - À implémenter");
+        }
+    </script>
 </body>
-
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/0.155.0/three.min.js"></script>
-<script src="https://cdn.jsdelivr.net/gh/automat/controlkit.js@master/bin/controlKit.min.js"></script>
-<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/sheryjs/dist/Shery.js"></script>
-<script>
-    document.addEventListener("DOMContentLoaded", function () {
-        const uncopyableElement = document.querySelector(".uncopyable");
-
-        uncopyableElement.addEventListener("selectstart", function (event) {
-            event.preventDefault();
-        });
-    });
-</script>
-<script src="https://cdn.plyr.io/3.6.9/plyr.js"></script>
-<script src="https://proavipatil.github.io/data/fs/src/script.js"></script>
-
 </html>
