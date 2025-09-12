@@ -1,43 +1,319 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 <head>
     <meta charset="UTF-8">
     <meta property="og:image" content="https://www.flaticon.com/premium-icon/icons/svg/2626/2626281.svg" itemprop="thumbnailUrl">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{file_name}}</title>
-    <link rel="stylesheet" type='text/css' href="https://drive.google.com/uc?export=view&id=1pVLG4gZy7jdow3sO-wFS06aP_A9QX0O6">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Delius">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #4361ee;
+            --primary-dark: #3a56d4;
+            --secondary: #f72585;
+            --text-light: #f8f9fa;
+            --text-dark: #212529;
+            --bg-light: #ffffff;
+            --bg-dark: #121212;
+            --card-light: #f8f9fa;
+            --card-dark: #1e1e1e;
+            --transition: all 0.3s ease;
+            --shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+            --radius: 12px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            color: var(--text-dark);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            transition: var(--transition);
+        }
+
+        body.dark {
+            background: linear-gradient(135deg, #232526 0%, #414345 100%);
+            color: var(--text-light);
+        }
+
+        .container {
+            max-width: 800px;
+            width: 100%;
+            text-align: center;
+        }
+
+        header {
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 40px;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(10px);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+        }
+
+        body.dark header {
+            background: rgba(30, 30, 30, 0.8);
+        }
+
+        #file-name {
+            font-weight: 600;
+            font-size: 1.5rem;
+            color: var(--primary);
+            transition: var(--transition);
+        }
+
+        body.dark #file-name {
+            color: var(--secondary);
+        }
+
+        .theme-toggle {
+            position: relative;
+            width: 60px;
+            height: 30px;
+        }
+
+        .theme-toggle input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .toggle-slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: .4s;
+            border-radius: 34px;
+        }
+
+        .toggle-slider:before {
+            position: absolute;
+            content: "";
+            height: 22px;
+            width: 22px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+
+        input:checked + .toggle-slider {
+            background-color: var(--primary);
+        }
+
+        input:checked + .toggle-slider:before {
+            transform: translateX(30px);
+        }
+
+        .download-card {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            border-radius: var(--radius);
+            padding: 40px;
+            box-shadow: var(--shadow);
+            margin-bottom: 30px;
+            transition: var(--transition);
+        }
+
+        body.dark .download-card {
+            background: rgba(30, 30, 30, 0.9);
+        }
+
+        .file-icon {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--primary);
+            border-radius: 50%;
+            color: white;
+            font-size: 2rem;
+        }
+
+        body.dark .file-icon {
+            background: var(--secondary);
+        }
+
+        .file-info {
+            margin-bottom: 30px;
+        }
+
+        .file-info h2 {
+            font-weight: 600;
+            margin-bottom: 10px;
+            font-size: 1.8rem;
+        }
+
+        .file-info p {
+            color: #6c757d;
+            font-size: 1rem;
+        }
+
+        body.dark .file-info p {
+            color: #adb5bd;
+        }
+
+        .download-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            font-size: 1.1rem;
+            font-weight: 500;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: var(--transition);
+            text-decoration: none;
+            box-shadow: 0 4px 6px rgba(67, 97, 238, 0.3);
+        }
+
+        .download-btn:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(67, 97, 238, 0.4);
+        }
+
+        body.dark .download-btn {
+            background: var(--secondary);
+            box-shadow: 0 4px 6px rgba(247, 37, 133, 0.3);
+        }
+
+        body.dark .download-btn:hover {
+            background: #e5127a;
+            box-shadow: 0 6px 12px rgba(247, 37, 133, 0.4);
+        }
+
+        .download-btn i {
+            margin-right: 10px;
+        }
+
+        .instructions {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(5px);
+            border-radius: var(--radius);
+            padding: 20px;
+            font-size: 0.9rem;
+            color: #495057;
+            transition: var(--transition);
+        }
+
+        body.dark .instructions {
+            background: rgba(30, 30, 30, 0.7);
+            color: #ced4da;
+        }
+
+        footer {
+            margin-top: 40px;
+            font-size: 0.8rem;
+            color: #6c757d;
+            text-align: center;
+            transition: var(--transition);
+        }
+
+        body.dark footer {
+            color: #adb5bd;
+        }
+
+        @media (max-width: 600px) {
+            header {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .download-card {
+                padding: 25px;
+            }
+            
+            .file-info h2 {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
 </head>
 
-<body class='cyber'>
+<body>
     <header>
-        <div class="toogle"></div>
-        <div id="file-name" class="cyber">
-            {{file_name}}
-        </div>
+        <div id="file-name">{{file_name}}</div>
+        <label class="theme-toggle">
+            <input type="checkbox" id="theme-toggle">
+            <span class="toggle-slider"></span>
+        </label>
     </header>
 
     <div class="container">
-        <a href="{{file_url}}">
-            <button class="cybr-btn">
-                Download
-                <span aria-hidden>_</span>
-                <span aria-hidden class="cybr-btn__glitch">_404 Error</span>
-                <span aria-hidden class="cybr-btn__tag">_%s</span>
-            </button>
-        </a>
+        <div class="download-card">
+            <div class="file-icon">
+                <i>📁</i>
+            </div>
+            <div class="file-info">
+                <h2>Fichier prêt à télécharger</h2>
+                <p>Cliquez sur le bouton ci-dessous pour télécharger votre fichier</p>
+            </div>
+            <a href="{{file_url}}">
+                <button class="download-btn">
+                    <i>↓</i> Télécharger
+                </button>
+            </a>
+        </div>
+        
+        <div class="instructions">
+            <p>Si le téléchargement ne démarre pas automatiquement, cliquez avec le bouton droit sur le bouton et sélectionnez "Enregistrer le lien sous..."</p>
+        </div>
     </div>
-	<script>
+    
+    <footer>
+        <p>© 2023 - Service de partage de fichiers</p>
+    </footer>
+
+    <script>
         const body = document.querySelector('body');
-        const title = document.querySelector('#file-name');
+        const themeToggle = document.getElementById('theme-toggle');
+        const fileName = document.querySelector('#file-name');
         const footer = document.querySelector('footer');
-        const toogle = document.querySelector('.toogle');
-        toogle.onclick = () => {
-            body.classList.toggle('dark')
-            footer.classList.toggle('dark')
-            title.classList.toggle('dark')
+        
+        // Vérifier le thème précédent
+        if (localStorage.getItem('theme') === 'dark') {
+            body.classList.add('dark');
+            themeToggle.checked = true;
+        }
+        
+        themeToggle.onclick = () => {
+            body.classList.toggle('dark');
+            
+            // Sauvegarder la préférence
+            if (body.classList.contains('dark')) {
+                localStorage.setItem('theme', 'dark');
+            } else {
+                localStorage.setItem('theme', 'light');
+            }
         }
     </script>
 </body>
