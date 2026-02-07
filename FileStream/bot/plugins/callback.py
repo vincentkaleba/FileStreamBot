@@ -134,8 +134,8 @@ async def gen_file_menu(_id, file_list_no, update: CallbackQuery):
     else:
         file_type = "Iɴᴄᴏɴɴᴜ"
 
-    page_link = f"{Server.URL}watch/{myfile_info['_id']}"
-    stream_link = f"{Server.URL}dl/{myfile_info['_id']}"
+    page_link = f"{Server.URL}/watch/{myfile_info['_id']}"
+    stream_link = f"{Server.URL}/dl/{myfile_info['_id']}"
     if "video" in file_type.lower():
         MYFILES_BUTTONS = InlineKeyboardMarkup(
             [
