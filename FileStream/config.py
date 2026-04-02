@@ -30,12 +30,24 @@ class Server:
     PORT = int(env.get("PORT", 8080))
     BIND_ADDRESS = str(env.get("BIND_ADDRESS", "0.0.0.0"))
     PING_INTERVAL = int(env.get("PING_INTERVAL", "1200"))
-    HAS_SSL = str(env.get("HAS_SSL", "0").lower()) in ("1", "true", "t", "yes", "y")
-    NO_PORT = str(env.get("NO_PORT", "0").lower()) in ("1", "true", "t", "yes", "y")
 
-    FQDN = str(env.get("FQDN", "filestreambot.koyeb.app")).replace("https://", "").replace("http://", "").rstrip("/")
-    URL = "https://{}{}".format(
-        FQDN, "" if NO_PORT else f":{PORT}"
-    )
+    # SSL 
+    HAS_SSL = str(env.get("HAS_SSL", "0")).lower() in ("1", "true", "t", "yes", "y")
+    NO_PORT = str(env.get("NO_PORT", "0")).lower() in ("1", "true", "t", "yes", "y")
+    raw_fqdn = str(env.get("FQDN", "filestreambot.koyeb.app")).rstrip("/")
+    if raw_fqdn.startswith("http://"):
+        detected_protocol = "http"
+        FQDN = raw_fqdn[len("http://"):]
+    elif raw_fqdn.startswith("https://"):
+        detected_protocol = "https"
+        FQDN = raw_fqdn[len("https://"):]
+    else:
+        detected_protocol = None
+        FQDN = raw_fqdn
+
+    PROTOCOL = "https" if HAS_SSL else (detected_protocol or "http")
+
+    # URL 
+    URL = f"{PROTOCOL}://{FQDN}{'' if NO_PORT else f':{PORT}'}"
 
 
